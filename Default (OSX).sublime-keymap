@@ -1,0 +1,20 @@
+[{    
+    "keys": ["super+ctrl+l"],
+    "command": "emacs_open_current_file"
+}, {
+    "keys": ["super+k", "="],
+    "command": "emacs_call_interactively",
+    "args": {
+        "command": "indent-region"
+    }
+}, {
+    "keys": ["super+k", "super+k"],
+    "command": "emacs_call_interactively",
+    "args": {
+        "command": "org-ctrl-c-ctrl-c"
+    },
+    "context": [{
+        "key": "selector",
+        "operand": "text.orgmode"
+    }]
+}]

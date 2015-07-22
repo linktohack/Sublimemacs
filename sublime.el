@@ -29,9 +29,9 @@
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (ditaa . t)))
+     (ditaa . t)
      (python . t)
      (ruby . t)
      (sh . t)
-     (makefile . t)
+     (makefile . t)))
   )

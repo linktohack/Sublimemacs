@@ -3,15 +3,15 @@
     "command": "emacs_open_current_file"
 }, {
     "keys": ["super+k", "="],
-    "command": "emacs_call_interactively",
+    "command": "emacs_eval",
     "args": {
-        "command": "indent-region"
+        "body": "(call-interactively 'indent-region)"
     }
 }, {
     "keys": ["super+k", "super+k"],
-    "command": "emacs_call_interactively",
+    "command": "emacs_eval",
     "args": {
-        "command": "org-ctrl-c-ctrl-c"
+        "body": "(call-interactively (key-binding (kbd \"C-c C-c\")))"
     },
     "context": [{
         "key": "selector",

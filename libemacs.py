@@ -25,6 +25,7 @@ def _flatten(*cmd):
 
 def _exec(*cmd, wait=True):
     flat_cmd = _flatten(*cmd)
+    debug('exec command', flat_cmd)
     pipe = subprocess.Popen(flat_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if wait:
         stdout, stderr = pipe.communicate()
@@ -78,8 +79,8 @@ class Emacs:
         with open(temp_file, 'wb') as f:
             f.write(buffer_string.encode('utf-8'))
         exit_code, stdout, stderr = self.eval_in_file(temp_file, commands, mark, point)
-        if exit_code != 0:
-            raise Exception('Failed to evaluate body')
+        if exit_code is not None and exit_code != 0:
+            raise Exception('Failed to evaluate body: %s'%stderr)
         with open(temp_file, 'rb') as f:
             new_buffer_string = f.read().decode('utf-8')
         os.unlink(temp_file)
@@ -96,6 +97,3 @@ class Emacs:
             else:
                 open_cmd = [self.emacs, self.param, '+%d:%d'%(row, col), file_name]
         _exec(open_cmd, wait=False)
-
-    def kill(self):
-        exit_code, _, _ = self.eval('(kill-emacs)')

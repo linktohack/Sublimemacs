@@ -2,10 +2,9 @@ import os, subprocess
 import tempfile
 
 # Daemon Emacs working as a service
-EMACSCLIENT = '/usr/local/Cellar/emacs/24.5/bin/emacsclient'
 EMACS = '/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs'
-EMACS_PARAM = ['--geometry', '166x46']
-
+CLIENT = '/usr/local/Cellar/emacs/24.5/bin/emacsclient'
+PARAM = ['--geometry', '166x46']
 SOCKET = '/tmp/sublime/server'
 INIT_FILE = '~/Downloads/sublime.el'
 
@@ -13,6 +12,9 @@ INIT_FILE = '~/Downloads/sublime.el'
 # when open org file in terminal but works just fine for the Gui
 # version.
 ALTERNATE_EDITOR = '/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app/Contents/MacOS/Emacs'
+
+# debug = print
+debug = lambda *args, **kwargs: None
 
 def _flatten(*cmd):
     flat_cmd = []
@@ -34,7 +36,7 @@ def _exec(*cmd, wait=True):
         return None, '', ''
 
 class Emacs:
-    def __init__(self, client=EMACSCLIENT, emacs=EMACS, param=EMACS_PARAM,
+    def __init__(self, client=CLIENT, emacs=EMACS, param=PARAM,
                  alternate_editor=ALTERNATE_EDITOR,
                  socket=SOCKET, init_file=INIT_FILE):
         self.client = client
@@ -42,7 +44,8 @@ class Emacs:
         self.param = param
         self.alternate_editor = alternate_editor
         self.socket = socket
-        self.init_file = init_file
+        expanded_init_file = os.path.expanduser(init_file)
+        self.init_file = expanded_init_file if os.path.exists(expanded_init_file) else None
         
     def _maybe_start_emacs(self):
         # TODO: Expensive version
@@ -50,7 +53,10 @@ class Emacs:
         check_cmd = [self.client, '-s', self.socket, '-e', 'nil']
         exit_code, _, _ = _exec(check_cmd)
         if exit_code != 0:
-            _exec(self.emacs, '-q', '-l', self.init_file, '--daemon')
+            if self.init_file is not None:
+                _exec(self.emacs, '-q', '-l', self.init_file, '--daemon')
+            else:
+                _exec(self.emacs, '-q', '--daemon')
             if not os.path.exists(self.socket):
                 raise Exception('Failed to start Emacs Daemon')
 

@@ -1,11 +1,23 @@
 import os
 import sublime, sublime_plugin
-from Emacs.libemacs import Emacs
+from SublimeEmacs.libemacs import Emacs, EMACS, CLIENT, PARAM, SOCKET, INIT_FILE, ALTERNATE_EDITOR
 
-emacs = Emacs()
+# debug = print
+debug = lambda *args, **kwargs: None
+
+def _settings(view):
+    return {
+        'emacs': view.settings().get('emacs', EMACS), 
+        'client': view.settings().get('emacs_client', CLIENT), 
+        'param': view.settings().get('emacs_param', PARAM), 
+        'socket': view.settings().get('emacs_socket', SOCKET), 
+        'init_file': view.settings().get('emacs_init_file', INIT_FILE),
+        'alternate_editor': view.settings().get('emacs_alternate_editor', ALTERNATE_EDITOR)
+    }
 
 class EmacsEvalCommand(sublime_plugin.TextCommand):
     def run(self, edit, body):
+        emacs = Emacs(**_settings(self.view))
         view = self.view
         file_name = self.view.file_name()
         _, file_ext = os.path.splitext(file_name)
@@ -17,7 +29,7 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
         new_buffer_string, stdout = emacs.eval_in_buffer_string(buffer_string,
                                                                 body,
                                                                 beg, end, file_ext=file_ext)
-        print('stdout', stdout)
+        debug('stdout', stdout)
         view.replace(edit, buffer_region, new_buffer_string)
         def to_int(x):
             try: return int(float(x))
@@ -30,10 +42,12 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
 
 class EmacsKillDaemonCommand(sublime_plugin.WindowCommand):
     def run(self):
+        emacs = Emacs(**_settings(self.view))
         emacs.eval("(kill-emacs)")
 
 class EmacsOpenCurrentFileCommand(sublime_plugin.TextCommand):
     def run(self, edit):
+        emacs = Emacs(**_settings(self.view))
         file_name = self.view.file_name()
         (row,col) = self.view.rowcol(self.view.sel()[0].begin())
         emacs.open_file(file_name, row+1, col+1)

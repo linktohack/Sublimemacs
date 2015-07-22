@@ -1,0 +1,8 @@
+{
+	"emacs_client": "/usr/local/Cellar/emacs/24.5/bin/emacsclient",
+	"emacs": "/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs",
+	"emacs_param": ["--geometry", "166x46"],
+	"emacs_socket": "/tmp/sublime/server",
+	"emacs_init_file": "/sublime.el",
+	"emacs_alternate_editor": "/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app/Contents/MacOS/Emacs"
+}

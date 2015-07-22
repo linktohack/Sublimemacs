@@ -2,7 +2,7 @@ import os, subprocess
 import tempfile
 
 # Daemon Emacs working as a service
-EMACSCLIENT = '/usr/local/bin/emacsclient'
+EMACSCLIENT = '/usr/local/Cellar/emacs/24.5/bin/emacsclient'
 EMACS = '/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs'
 EMACS_PARAM = ['--geometry', '166x46']
 
@@ -12,7 +12,7 @@ INIT_FILE = '~/Downloads/sublime.el'
 # Aternate editor, useful for OS X: Mac-Port version crashes silently
 # when open org file in terminal but works just fine for the Gui
 # version.
-ALTERNATE_EDITOR = ['open', '-a', '/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app', '--args']
+ALTERNATE_EDITOR = '/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app/Contents/MacOS/Emacs'
 
 def _flatten(*cmd):
     flat_cmd = []

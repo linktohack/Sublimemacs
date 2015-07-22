@@ -17,12 +17,12 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
         new_buffer_string, stdout = emacs.eval_in_buffer_string(buffer_string,
                                                                 body,
                                                                 beg, end, file_ext=file_ext)
+        print('stdout', stdout)
         view.replace(edit, buffer_region, new_buffer_string)
         def to_int(x):
             try: return int(float(x))
             except: return 0
         mark, point, mark_active = map(to_int, stdout[1:-2].split())
-        print('stdout', stdout)
         if not mark_active or not point:
             mark = point
         sel.clear()

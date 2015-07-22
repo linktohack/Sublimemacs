@@ -13,8 +13,8 @@ INIT_FILE = '~/Downloads/sublime.el'
 # version.
 ALTERNATE_EDITOR = '/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app/Contents/MacOS/Emacs'
 
-# debug = print
 debug = lambda *args, **kwargs: None
+# debug = print
 
 def _flatten(*cmd):
     flat_cmd = []
@@ -69,15 +69,18 @@ class Emacs:
         if point == mark: mark_active = 'nil'
         else: mark_active = 't'
         body = """
-            (progn
+            (let (saved-mark saved-point saved-mark-active)
               (find-file "%s")
               (set-mark %d)
               (goto-char %d)
               (setq mark-active %s)
               %s
+              (setq saved-mark (mark))
+              (setq saved-point (point))
+              (setq saved-mark-active mark-active)
               (save-buffer)
               (kill-buffer)
-              (list (mark) (point) mark-active))
+              (list saved-mark saved-point saved-mark-active))
             """ % (file_name, mark, point, mark_active, commands)
         return self.eval(body)
 

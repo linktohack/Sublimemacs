@@ -1,14 +1,14 @@
 [{    
-    "keys": ["primary+alt+l"],
+    "keys": ["super+ctrl+l"],
     "command": "emacs_open_current_file"
 }, {
-    "keys": ["primary+k", "="],
+    "keys": ["super+k", "="],
     "command": "emacs_eval",
     "args": {
         "body": "(call-interactively 'indent-region)"
     }
 }, {
-    "keys": ["primary+k", "primary+k"],
+    "keys": ["super+k", "super+k"],
     "command": "emacs_eval",
     "args": {
         "body": "(call-interactively (key-binding (kbd \"C-c C-c\")))"

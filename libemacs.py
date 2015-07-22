@@ -71,18 +71,19 @@ class Emacs:
               (kill-buffer)
               (list (mark) (point) mark-active))
             """ % (file_name, mark, point, mark_active, commands)
-        exit_code, _, _ = self.eval(body)
-        return exit_code
+        return self.eval(body)
 
     def eval_in_buffer_string(self, buffer_string, commands, mark=0, point=0, file_ext='.txt'):
-        f = tempfile.NamedTemporaryFile(delete=False, suffix=file_ext, mode='wb')
-        temp_file_name = f.name
-        f.write(buffer_string.encode('utf-8'))
-        f.close()
-        self.eval_in_file(temp_file_name, commands, mark, point)
-        with open(temp_file_name, 'rb') as f:
-            return f.read().decode('utf-8')
-        # TODO: Remove temporary file
+        temp_file = tempfile.mkstemp(suffix=file_ext)[1]
+        with open(temp_file, 'wb') as f:
+            f.write(buffer_string.encode('utf-8'))
+        exit_code, stdout, stderr = self.eval_in_file(temp_file, commands, mark, point)
+        if exit_code != 0:
+            raise Exception('Failed to evaluate body')
+        with open(temp_file, 'rb') as f:
+            new_buffer_string = f.read().decode('utf-8')
+        os.unlink(temp_file)
+        return new_buffer_string, stdout
 
     def open_file(self, file_name, row, col):
         check_cmd = [self.client, '-e', 't']

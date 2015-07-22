@@ -32,15 +32,18 @@ class Emacs:
                 flat_cmd.append(c)
         return flat_cmd
 
-    def subprocess_exit_code_and_output(self, *cmd):
+    def subprocess_exit_code_and_output(self, *cmd, wait=True):
         flat_cmd = self.flatten_cmd(*cmd)
         pipe = subprocess.Popen(flat_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = pipe.communicate()
-        return pipe.returncode, stdout.decode('utf-8'), stderr.decode('utf-8')
+        if wait:
+            stdout, stderr = pipe.communicate()
+            return pipe.returncode, stdout.decode('utf-8'), stderr.decode('utf-8')
+        else:
+            return None, '', ''
 
     def emacsclient(self, *args, wait=True):
-        # FIXME: Expensive version
-        # TODO: Using socket directly should be much faster, no process, no command line...
+        # TODO: Expensive version
+        #       Using socket directly should be much faster, no process, no command line...
         check_cmd = [EMACSCLIENT, '-s', SOCKET, '-e', 'nil']
         exit_code, _, _ = self.subprocess_exit_code_and_output(check_cmd)
         if exit_code != 0:
@@ -49,11 +52,7 @@ class Emacs:
                 raise Exception('Failed to start Emacs Daemon')
         open_cmd = [EMACSCLIENT, '-s', SOCKET]
         open_cmd.extend(list(args))
-        if wait:
-            return self.subprocess_exit_code_and_output(open_cmd)
-        else:
-            subprocess.Popen(self.flatten_cmd(open_cmd))
-            return 0, '', ''
+        return self.subprocess_exit_code_and_output(open_cmd, wait)
 
     def kill_daemon(self):
         src = """(kill-emacs)"""

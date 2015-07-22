@@ -53,16 +53,14 @@ class Emacs:
             if not os.path.exists(self.socket):
                 raise Exception('Failed to start Emacs Daemon')
 
-    def eval(self, *args):
+    def eval(self, *body):
         self._maybe_start_emacs()
-        open_cmd = [self.client, '-s', self.socket]
-        open_cmd.extend(list(args))
-        return _exec(open_cmd, wait=True)
+        return _exec([self.client, '-s', self.socket, '-e', body], wait=True)
 
     def eval_in_file(self, file_name, commands, mark=0, point=0):
         if point == mark: mark_active = 'nil'
         else: mark_active = 't'
-        src = """
+        body = """
             (progn
               (find-file "%s")
               (set-mark %d)
@@ -73,8 +71,7 @@ class Emacs:
               (kill-buffer)
               (list (mark) (point) mark-active))
             """ % (file_name, mark, point, mark_active, commands)
-        cmd = ['-e', src]
-        exit_code, _, _ = self.eval(cmd)
+        exit_code, _, _ = self.eval(body)
         return exit_code
 
     def eval_in_buffer_string(self, buffer_string, commands, mark=0, point=0, file_ext='.txt'):
@@ -88,7 +85,7 @@ class Emacs:
         # TODO: Remove temporary file
 
     def open_file(self, file_name, row, col):
-        check_cmd = [self.client, '-e', 'nil']
+        check_cmd = [self.client, '-e', 't']
         exit_code, _, _ = _exec(check_cmd)
         if exit_code == 0:
             open_cmd = [self.client, '-n', '+%d:%d'%(row, col), file_name]
@@ -97,9 +94,7 @@ class Emacs:
                 open_cmd = [self.alternate_editor, self.param, '+%d:%d'%(row, col), file_name]
             else:
                 open_cmd = [self.emacs, self.param, '+%d:%d'%(row, col), file_name]
-                _exec(open_cmd, wait=False)
+        _exec(open_cmd, wait=False)
 
     def kill(self):
-        src = """(kill-emacs)"""
-        cmd = ['-e', src]
-        exit_code, _, _ = self.eval(cmd)
+        exit_code, _, _ = self.eval('(kill-emacs)')

@@ -17,14 +17,16 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
         new_buffer_string, stdout = emacs.eval_in_buffer_string(buffer_string,
                                                                 body,
                                                                 beg, end, file_ext=file_ext)
+        view.replace(edit, buffer_region, new_buffer_string)
         def to_int(x):
             try: return int(float(x))
             except: return 0
         mark, point, mark_active = map(to_int, stdout[1:-2].split())
+        print('stdout', stdout)
+        if not mark_active or not point:
+            mark = point
         sel.clear()
-        if mark_active:
-            sel.add(sublime.Region(mark, point))
-        view.replace(edit, buffer_region, new_buffer_string)
+        sel.add(sublime.Region(mark, point))
 
 class EmacsKillDaemonCommand(sublime_plugin.WindowCommand):
     def run(self):

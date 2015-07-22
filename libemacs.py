@@ -55,6 +55,7 @@ class Emacs:
                 raise Exception('Failed to start Emacs Daemon')
 
     def eval(self, *body):
+        # TODO: Same here
         self._maybe_start_emacs()
         return _exec([self.client, '-s', self.socket, '-e', body], wait=True)
 
@@ -75,6 +76,7 @@ class Emacs:
         return self.eval(body)
 
     def eval_in_buffer_string(self, buffer_string, commands, mark=0, point=0, file_ext='.txt'):
+        # TODO: Send buffer_string over socket, too?
         temp_file = tempfile.mkstemp(suffix=file_ext)[1]
         with open(temp_file, 'wb') as f:
             f.write(buffer_string.encode('utf-8'))

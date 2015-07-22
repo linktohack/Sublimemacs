@@ -1,0 +1,31 @@
+* Yet another attempt to bring Emacs' power into Sublime Text
+While [[https://github.com/grundprinzip/sublemacspro][other]] trying
+to bring Emacs's key bindings etc into Sublime Text, this plugin takes
+another approach:
+#+BEGIN_QUOTE
+Evaluate interactive commands in current buffer using Emacs server.
+#+END_QUOTE
+* Commands and key bindings
+Currently only ~indent-region~ and ~C-c C-c~ (depend on scope, say
+=Org-mode=) are implemented, but ~emacs-eval~ is there and ready to
+bind to any key. If you need the real Emacs, try
+~emacs_open_current_file~.
+
+| Keys                    | Command                   | Args                                                           | Note |
+|-------------------------+---------------------------+----------------------------------------------------------------+------|
+| ["super+k", "="]        | "emacs_eval"              | "body": "(call-interactively 'indent-region)"                  |      |
+| ["super+k", "super+k"], | "emacs_eval"              | "body": "(call-interactively (key-binding (kbd \"C-c C-c\")))" |      |
+|-------------------------+---------------------------+----------------------------------------------------------------+------|
+| ["super+ctrl+l"]        | "emacs_open_current_file" |                                                                |      |
+
+* Caveats
+Mac-Port version crashes silently when open org file in terminal but
+works just fine for the Gui version, so a setting
+~emacs_alternate_editor~ was introduced. If you're not using Mac-Port
+version then just leave it blank; if you do, do not forget to install
+the =brew= version.
+* libemacs
+While written as a Sublime plugin, =libemacs.py= is ready to use in
+any python3 environment (=Vim= etc).
+* License
+MIT

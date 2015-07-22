@@ -1,3 +1,4 @@
+import os
 import sublime, sublime_plugin
 from Emacs.libemacs import Emacs
 
@@ -5,7 +6,7 @@ emacs = Emacs()
 
 class EmacsKillDaemonCommand(sublime_plugin.WindowCommand):
     def run(self):
-        emacs.kill_daemon()
+        emacs.kill()
 
 class EmacsOpenCurrentFileCommand(sublime_plugin.TextCommand):
     def run(self, edit):

@@ -24,9 +24,7 @@ def _flatten(*cmd):
     return flat_cmd
 
 def _exec(*cmd, wait=True):
-    print('cmd', cmd)
     flat_cmd = _flatten(*cmd)
-    print('flat_cmd', flat_cmd)
     pipe = subprocess.Popen(flat_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if wait:
         stdout, stderr = pipe.communicate()
@@ -36,15 +34,15 @@ def _exec(*cmd, wait=True):
 
 class Emacs:
     def __init__(self, client=EMACSCLIENT, emacs=EMACS, param=EMACS_PARAM,
-             alternate_editor=ALTERNATE_EDITOR,
-             socket=SOCKET, init_file=INIT_FILE):
+                 alternate_editor=ALTERNATE_EDITOR,
+                 socket=SOCKET, init_file=INIT_FILE):
         self.client = client
         self.emacs = emacs
         self.param = param
         self.alternate_editor = alternate_editor
         self.socket = socket
         self.init_file = init_file
-    
+        
     def _maybe_start_emacs(self):
         # TODO: Expensive version
         #       Using socket directly should be much faster, no process, no command line...
@@ -55,11 +53,11 @@ class Emacs:
             if not os.path.exists(self.socket):
                 raise Exception('Failed to start Emacs Daemon')
 
-    def eval(self, *args, wait=True):
+    def eval(self, *args):
         self._maybe_start_emacs()
         open_cmd = [self.client, '-s', self.socket]
         open_cmd.extend(list(args))
-        return _exec(open_cmd, wait)
+        return _exec(open_cmd, wait=True)
 
     def eval_in_file(self, file_name, commands, mark=0, point=0):
         if point == mark: mark_active = 'nil'
@@ -99,7 +97,7 @@ class Emacs:
                 open_cmd = [self.alternate_editor, self.param, '+%d:%d'%(row, col), file_name]
             else:
                 open_cmd = [self.emacs, self.param, '+%d:%d'%(row, col), file_name]
-        _exec(open_cmd, wait=False)
+                _exec(open_cmd, wait=False)
 
     def kill(self):
         src = """(kill-emacs)"""

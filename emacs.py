@@ -3,7 +3,7 @@ import sublime, sublime_plugin
 from SublimeEmacs.libemacs import Emacs, EMACS, CLIENT, PARAM, SOCKET, INIT_FILE, ALTERNATE_EDITOR
 
 debug = lambda *args, **kwargs: None
-debug = print
+# debug = print
 
 def _settings(view):
     return {

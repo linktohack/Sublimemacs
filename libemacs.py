@@ -44,8 +44,9 @@ class Emacs:
         self.param = param
         self.alternate_editor = alternate_editor
         self.socket = socket
-        expanded_init_file = os.path.expanduser(init_file)
+        expanded_init_file = os.path.abspath(os.path.expanduser(init_file))
         self.init_file = expanded_init_file if os.path.exists(expanded_init_file) else None
+        debug(self.init_file)
         
     def _maybe_start_emacs(self):
         # TODO: Expensive version

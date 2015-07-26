@@ -7,11 +7,12 @@ CLIENT = 'emacsclient'
 PARAM = []
 SOCKET = '/tmp/sublime/server'
 INIT_FILE = 'sublime.el'
-
 # Aternate editor, useful for OS X: Mac-Port version crashes silently
 # when open org file in terminal but works just fine for the Gui
 # version.
 ALTERNATE_EDITOR = ''
+
+PLUGIN_PATH = os.path.dirname(os.path.realpath(__file__))
 
 debug = lambda *args, **kwargs: None
 # debug = print
@@ -44,9 +45,11 @@ class Emacs:
         self.param = param
         self.alternate_editor = alternate_editor
         self.socket = socket
-        expanded_init_file = os.path.abspath(os.path.expanduser(init_file))
-        self.init_file = expanded_init_file if os.path.exists(expanded_init_file) else None
-        debug(self.init_file)
+        self.init_file = None
+        if os.path.exists(os.path.expanduser(init_file)):
+            self.init_file = os.path.expanduser(init_file)
+        elif os.path.exists(os.path.join(PLUGIN_PATH, init_file)):
+            self.init_file = os.path.join(PLUGIN_PATH, init_file)
         
     def _maybe_start_emacs(self):
         # TODO: Expensive version

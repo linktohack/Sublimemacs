@@ -20,7 +20,9 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
         emacs = Emacs(**_settings(self.view))
         view = self.view
         file_name = self.view.file_name()
-        _, file_ext = os.path.splitext(file_name)
+        file_ext = None
+        if file_name is not None:
+            _, file_ext = os.path.splitext(file_name)
         sel = view.sel()
         beg = sel[0].begin()
         end = sel[0].end()

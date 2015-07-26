@@ -2,16 +2,16 @@ import os, subprocess
 import tempfile
 
 # Daemon Emacs working as a service
-EMACS = '/usr/local/Cellar/emacs/24.5/Emacs.app/Contents/MacOS/Emacs'
-CLIENT = '/usr/local/Cellar/emacs/24.5/bin/emacsclient'
-PARAM = ['--geometry', '166x46']
+EMACS = 'emacs'
+CLIENT = 'emacsclient'
+PARAM = []
 SOCKET = '/tmp/sublime/server'
-INIT_FILE = '~/Downloads/sublime.el'
+INIT_FILE = 'sublime.el'
 
 # Aternate editor, useful for OS X: Mac-Port version crashes silently
 # when open org file in terminal but works just fine for the Gui
 # version.
-ALTERNATE_EDITOR = '/opt/homebrew-cask/Caskroom/emacs-mac/emacs-24.5-z-mac-5.8/Emacs.app/Contents/MacOS/Emacs'
+ALTERNATE_EDITOR = ''
 
 debug = lambda *args, **kwargs: None
 # debug = print

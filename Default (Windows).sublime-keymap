@@ -1,0 +1,5 @@
+[
+    { "keys": ["ctrl+alt+l"], "command": "emacs_open_current_file" },
+    { "keys": ["ctrl+k", "="], "command": "emacs_eval", "args": {"body": "(call-interactively 'indent-region)"} },
+    { "keys": ["ctrl+k", "ctrl+k"], "command": "emacs_eval", "args": {"body": "(call-interactively (key-binding (kbd \"C-c C-c\")))"} }
+]

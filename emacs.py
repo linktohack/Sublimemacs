@@ -23,14 +23,20 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
         file_ext = None
         if file_name is not None:
             _, file_ext = os.path.splitext(file_name)
+        tempdir = view.settings().get('emacs_tempdir', '.')
+        if tempdir == '.':
+            tempdir = os.path.dirname(file_name)
+        elif tempdir == '':
+            tempdir = None
         sel = view.sel()
         beg = sel[0].begin()
         end = sel[0].end()
         buffer_region = sublime.Region(0, view.size())
         buffer_string = view.substr(buffer_region)
         new_buffer_string, stdout = emacs.eval_in_buffer_string(buffer_string,
-                                                                body,
-                                                                beg, end, file_ext=file_ext)
+                                                                body, beg, end, 
+                                                                tempdir=tempdir,
+                                                                file_ext=file_ext)
         debug('stdout', stdout)
         view.replace(edit, buffer_region, new_buffer_string)
         def to_int(x):
@@ -44,7 +50,7 @@ class EmacsEvalCommand(sublime_plugin.TextCommand):
 
 class EmacsKillDaemonCommand(sublime_plugin.WindowCommand):
     def run(self):
-        emacs = Emacs(**_settings(self.view))
+        emacs = Emacs(**_settings(self.window.active_view()))
         emacs.eval("(kill-emacs)")
 
 class EmacsOpenCurrentFileCommand(sublime_plugin.TextCommand):

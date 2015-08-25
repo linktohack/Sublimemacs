@@ -4,5 +4,6 @@
 	"emacs_param": [],
 	"emacs_socket": "/tmp/sublime/server",
 	"emacs_init_file": "sublime.el",
-	"emacs_alternate_editor": ""
+	"emacs_alternate_editor": "",
+	"emacs_tempdir": "."
 }

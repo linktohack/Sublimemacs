@@ -74,6 +74,7 @@ class Emacs:
         else: mark_active = 't'
         body = """
             (let (saved-mark saved-point saved-mark-active)
+              (setq make-backup-files nil)
               (find-file "%s")
               (set-mark %d)
               (goto-char %d)
@@ -88,8 +89,11 @@ class Emacs:
             """ % (file_name, mark, point, mark_active, commands)
         return self.eval(body)
 
-    def eval_in_buffer_string(self, buffer_string, commands, mark=0, point=0, file_ext='.txt'):
+    def eval_in_buffer_string(self, buffer_string, commands, 
+                              mark=0, point=0, tempdir=None, file_ext='.txt'):
         # TODO: Send buffer_string over socket, too?
+        if tempdir is not None:
+            tempfile.tempdir = tempdir
         temp_file = tempfile.mkstemp(suffix=file_ext)[1]
         with open(temp_file, 'wb') as f:
             f.write(buffer_string.encode('utf-8'))

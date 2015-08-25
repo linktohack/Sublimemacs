@@ -1,0 +1,56 @@
+[
+    {
+        "caption": "Preferences: SublimeEmacs Settings - Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/SublimeEmacs/Preferences.sublime-settings"
+        }
+    },
+    {
+        "caption": "Preferences: SublimeEmacs Settings - Platform",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/SublimeEmacs/Preferences (OSX).sublime-settings",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: SublimeEmacs Settings - User",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/User/SublimeEmacs.sublime-settings",
+        }
+    },
+
+    {
+        "caption": "Preferences: SublimeEmacs Key Bindings - Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/SublimeEmacs/Default (Windows).sublime-keymap",
+            "platform": "Windows"
+        }
+    },
+    {
+        "caption": "Preferences: SublimeEmacs Key Bindings - Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/SublimeEmacs/Default (OSX).sublime-keymap",
+            "platform": "OSX"
+        }
+    },
+    {
+        "caption": "Preferences: SublimeEmacs Key Bindings - Default",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/SublimeEmacs/Default (Linux).sublime-keymap",
+            "platform": "Linux"
+        }
+    },
+    {
+        "caption": "Preferences: SublimeEmacs Key Bindings - User",
+        "command": "open_file", "args":
+        {
+            "file": "${packages}/User/SublimeEmacs.sublime-keymap",
+        }
+    }
+]

@@ -7,14 +7,6 @@
         }
     },
     {
-        "caption": "Preferences: SublimeEmacs Settings - Platform",
-        "command": "open_file", "args":
-        {
-            "file": "${packages}/SublimeEmacs/Preferences (OSX).sublime-settings",
-            "platform": "OSX"
-        }
-    },
-    {
         "caption": "Preferences: SublimeEmacs Settings - User",
         "command": "open_file", "args":
         {

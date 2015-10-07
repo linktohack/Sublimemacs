@@ -33,5 +33,6 @@
      (python . t)
      (ruby . t)
      (sh . t)
-     (makefile . t)))
-  )
+     (makefile . t))))
+
+(use-package js-mode :ensure t :mode "\\.js\\'" "\\.json\\'" "\\.sublime-.*\\'")
